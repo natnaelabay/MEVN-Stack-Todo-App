@@ -1,18 +1,40 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <div class="row">
+      <div class="col-10">
+        <input v-model="todo" class="form-control" type="text" placeholder="Todo's here" />
+      </div>
+      <div class="col-2">
+        <button @click="add" class="btn btn-primary">Add Todo</button>
+      </div>
+    </div>
+    <Todo :todos = "todos" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import Todo from "../components/todoList";
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      todo: ''
+    }
+  },
+  created() {
+    this.$store.dispatch("todo/dataAbc");
+  },
+  computed: {
+    todos() {
+      return this.$store.state.todo.todos;
+    },
+  },
+  methods: {
+    add() {
+      this.$store.dispatch('todo/add',this.todo)
+      this.$store.dispatch('todo/dataAbc')
+    }
+  },
+  name: "Home",
+  components: { Todo },
+};
 </script>
